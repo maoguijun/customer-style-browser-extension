@@ -1,6 +1,16 @@
 let page = document.getElementById("buttonDiv");
 page.addEventListener("click", handleButtonClick);
-
+/**
+ * TODOs：
+ * 1. 添加滚动定位功能 保证选中的item永远在视野范围内
+ * 2. 获取当前行中的输入，动态判断应该匹配的是csskey还是value，value匹配时忽略前方空格，仅从冒号前匹配\w
+ * 3. 菜单点击其他区域自动关闭，hover时动态添加active，点中后取值
+ * 4. 输入时的模糊搜索，比如输入wi 匹配 width ..... white-space 按照 wi_,w_i,_w_i_来推荐，value同理,
+ *    最后用一个set去存要显示的推荐内容，避免重复
+ * 5. 菜单显示位置跟随输入时光标位置
+ * 6. 跟随窗口大小适配菜单栏大小，最小不小于12px的字体，如果窗口太小装不下，用一个confirm提示一次，
+ *    是否再次显示存在chrome.storage中，并在插件右上角显示感叹号可以再次打开这个confirm
+ */
 function keyLinstener(e) {
     const contextMenuElement = document.getElementById("contextMenuContainer");
     let current;
@@ -78,9 +88,9 @@ function handleButtonClick() {
         document.body.appendChild(contextMenu)
         addKeyDownListener();
     } else if (contextMenuElement.style.display !== 'none') {
-        console.log('关闭菜单---');
+        console.log('close context menu');
         removeKeyDownListener();
-        // contextMenuElement.style.display = 'none';
+        contextMenuElement.style.display = 'none';
     } else {
         contextMenuElement.style.display = 'inline-block';
         addKeyDownListener();
