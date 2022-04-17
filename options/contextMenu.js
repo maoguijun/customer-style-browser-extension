@@ -5,7 +5,7 @@ page.addEventListener("click", handleButtonClick);
  * 1. 添加滚动定位功能 保证选中的item永远在视野范围内
  * 2. 获取当前行中的输入，动态判断应该匹配的是csskey还是value，value匹配时忽略前方空格，仅从冒号前匹配\w，
  *    最好能获取左右键和点击的位置光标前方，不然推荐值可能有误（没法处理就移动或者点击后直接关掉context menu）
- * 3. 菜单点击其他区域自动关闭，hover时动态添加active，点中后取值
+ * down----- 3. 菜单点击其他区域自动关闭，hover时动态添加active，点中后取值----down;
  * 4. 输入时的模糊搜索，比如输入wi 匹配 width ..... white-space 按照 wi_,w_i,_w_i_来推荐，value同理,
  *    最后用一个set去存要显示的推荐内容，避免重复
  * 5. 菜单显示位置跟随输入时光标位置
@@ -48,6 +48,7 @@ function keyLinstener(e) {
             console.log('selected content  : ', document.querySelector('.active').innerText);
             contextMenuElement.style.display = 'none';
             removeKeyDownListener();
+            removeClickListener();
             break;
         case 'Enter':
             e.preventDefault();
@@ -55,12 +56,33 @@ function keyLinstener(e) {
             console.log('selected content  : ', document.querySelector('.active').innerText);
             contextMenuElement.style.display = 'none';
             removeKeyDownListener();
+            removeClickListener();
             break;
         default:
             break;
     }
 }
-
+function clickListener(e) {
+    console.log(e.target.innerText);
+    removeClickListener();
+    document.getElementById("contextMenuContainer").style.display = 'none';
+}
+function addClickListener() {
+    // 点击其他区域消除菜单
+    document.addEventListener('click',(e) => {
+        if (e.path[2].id !== 'contextMenuContainer' && e.target.id !== 'buttonDiv') {
+            document.getElementById("contextMenuContainer").style.display = 'none';
+        }
+    });
+    document.querySelectorAll('#contextMenuContainer > div').forEach(item => {
+        item.addEventListener('click', clickListener);
+    });
+}
+function removeClickListener() {
+    document.querySelectorAll('#contextMenuContainer > div').forEach(item => {
+        item.addEventListener('click', clickListener);
+    });
+}
 function addKeyDownListener() {
     window.addEventListener("keydown", keyLinstener)
 }
@@ -88,12 +110,15 @@ function handleButtonClick() {
         contextMenu.appendChild(item4);
         document.body.appendChild(contextMenu)
         addKeyDownListener();
+        addClickListener();
     } else if (contextMenuElement.style.display !== 'none') {
         console.log('close context menu');
         removeKeyDownListener();
+        removeClickListener()
         contextMenuElement.style.display = 'none';
     } else {
         contextMenuElement.style.display = 'inline-block';
+        addClickListener();
         addKeyDownListener();
     }
 }

@@ -25,6 +25,11 @@
     border-bottom: 1px solid gray;
 }
 
+#contextMenuContainer > div:hover{
+    background-color: rgba(200,150,200,0.3);
+    cursor: pointer;
+}
+
 #contextMenuContainer > div.active{
     color: honeydew;
     background-color: mediumslateblue;
