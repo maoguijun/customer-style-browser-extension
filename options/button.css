@@ -1,9 +1,12 @@
+body{
+    scrollbar-width: none; /* Firefox */
+}
 #buttonDiv{
+    height: 100px;
     width: 100px;
-    height: 150px;
     background-color: brown;
 }
-
+::-webkit-scrollbar {display: none; /* Chrome Safari */}
 #contextMenuContainer{
     width: 150px;
     height: 250px;
