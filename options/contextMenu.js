@@ -7,7 +7,7 @@ const color = 'AliceBlue|AntiqueWhite|Aqua|Aquamarine|Azure|Beige|Bisque|Black|B
 const length = '0%|0ch|0cm|0em|0ex|0fr|0in|0mm|0px|0pt|0px|0rem|0vh|0vw|0vmin|0vmax'.split('|');
 /**
  * TODOs：
- * 1. 添加滚动定位功能 保证选中的item永远在视野范围内
+ * down----- 1.添加滚动定位功能 保证选中的item永远在视野范围内----down
  * 2. 获取当前行中的输入，动态判断应该匹配的是csskey还是value，value匹配时忽略前方空格，仅从冒号前匹配\w，
  *    最好能获取左右键和点击的位置光标前方，不然推荐值可能有误（没法处理就移动或者点击后直接关掉context menu）
  * down----- 3. 菜单点击其他区域自动关闭，hover时动态添加active，点中后取值----down;
@@ -22,31 +22,62 @@ function keyLinstener(e) {
     let current;
     switch (e.key) {
         case 'ArrowUp':
-            console.log('press up');
-            current = document.querySelector('.active');
-            let pre = document.querySelector('.active').previousElementSibling;
-            if (!!pre) {
-                current.classList.toggle("active");
-                pre.classList.toggle("active");
-            } else {
-                current.classList.toggle("active");
-                let last = document.getElementById("contextMenuContainer").lastElementChild;
-                last && last.classList.toggle("active");
+        console.log('press up');
+        current = document.querySelector('.active');
+        let pre = document.querySelector('.active').previousElementSibling;
+        if (!!pre) {
+            current.classList.toggle("active");
+            pre.classList.toggle("active");
+            if(pre.offsetTop > 129){
+                contextMenuElement.scrollTo({
+                    top:pre.offsetTop-129,
+                    left:0,
+                    behavior:"smooth"
+                })
+            }else{
+                contextMenuElement.scrollTo({
+                    top:0,
+                    left:0,
+                    behavior:"smooth"
+                })
             }
-            break;
-        case 'ArrowDown':
-            console.log('press down');
-            current = document.querySelector('.active');
-            let next = document.querySelector('.active').nextElementSibling;
-            if (!!next) {
-                current.classList.toggle("active");
-                next.classList.toggle("active");
-            } else {
-                current.classList.toggle("active");
-                let first = document.getElementById("contextMenuContainer").firstElementChild;
-                first && first.classList.toggle("active");
+        } else {
+            current.classList.toggle("active");
+            let last = document.getElementById("contextMenuContainer").lastElementChild;
+            last && last.classList.toggle("active");
+            contextMenuElement.scrollTo({
+                top:last.offsetTop,
+                left:0,
+                behavior:"auto"
+            })
+        }
+        break;
+    case 'ArrowDown':
+        console.log('press down');
+        current = document.querySelector('.active');
+        let next = document.querySelector('.active').nextElementSibling;
+        if (!!next) {
+            current.classList.toggle("active");
+            next.classList.toggle("active");
+            console.log('distance from top :',next.offsetTop)
+            if(next.offsetTop > 129){
+                contextMenuElement.scrollTo({
+                    top:next.offsetTop-129,
+                    left:0,
+                    behavior:"smooth"
+                })
             }
-            break;
+        } else {
+            current.classList.toggle("active");
+            let first = document.getElementById("contextMenuContainer").firstElementChild;
+            first && first.classList.toggle("active");
+            contextMenuElement.scrollTo({
+                top:first.offsetTop,
+                left:0,
+                behavior:"auto"
+            })
+        }
+        break;
         case 'Tab':
             e.preventDefault();
             e.stopImmediatePropagation();
