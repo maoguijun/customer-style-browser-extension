@@ -2,7 +2,7 @@
 let page = document.getElementById("buttonDiv");
 // page.addEventListener("click", handleButtonClick);
 const inputDom = document.querySelector('.input');
-inputDom.addEventListener("change", (e) => { getRecommandResult(e.target.value) })
+inputDom.addEventListener("input", (e) => { getRecommandResult(e.target.value) })
 const color = 'AliceBlue|AntiqueWhite|Aqua|Aquamarine|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue|BlueViolet|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|DarkBlue|DarkCyan|DarkGoldenRod|DarkGray|DarkGreen|DarkKhaki|DarkMagenta|DarkOliveGreen|DarkOrange|DarkOrchid|DarkRed|DarkSalmon|DarkSeaGreen|DarkSlateBlue|DarkSlateGray|DarkTurquoise|DarkViolet|DeepPink|DeepSkyBlue|DimGray|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold|GoldenRod|Gray|Green|GreenYellow|HoneyDew|HotPink|IndianRed |Indigo  |Ivory|Khaki|Lavender|LavenderBlush|LawnGreen|LemonChiffon|LightBlue|LightCoral|LightCyan|LightGoldenRodYellow|LightGray|LightGreen|LightPink|LightSalmon|LightSeaGreen|LightSkyBlue|LightSlateGray|LightSteelBlue|LightYellow|Lime|LimeGreen|Linen|Magenta|Maroon|MediumAquaMarine|MediumBlue|MediumOrchid|MediumPurple|MediumSeaGreen|MediumSlateBlue|MediumSpringGreen|MediumTurquoise|MediumVioletRed|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive|OliveDrab|Orange|OrangeRed|Orchid|PaleGoldenRod|PaleGreen|PaleTurquoise|PaleVioletRed|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|SlateBlue|SlateGray|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White|WhiteSmoke|Yellow|YellowGreen'.split('|');
 const length = '0%|0ch|0cm|0em|0ex|0fr|0in|0mm|0px|0pt|0px|0rem|0vh|0vw|0vmin|0vmax'.split('|');
 /**
@@ -22,62 +22,62 @@ function keyLinstener(e) {
     let current;
     switch (e.key) {
         case 'ArrowUp':
-        console.log('press up');
-        current = document.querySelector('.active');
-        let pre = document.querySelector('.active').previousElementSibling;
-        if (!!pre) {
-            current.classList.toggle("active");
-            pre.classList.toggle("active");
-            if(pre.offsetTop > 129){
+            console.log('press up');
+            current = document.querySelector('.active');
+            let pre = document.querySelector('.active').previousElementSibling;
+            if (!!pre) {
+                current.classList.toggle("active");
+                pre.classList.toggle("active");
+                if (pre.offsetTop > 129) {
+                    contextMenuElement.scrollTo({
+                        top: pre.offsetTop - 129,
+                        left: 0,
+                        behavior: "smooth"
+                    })
+                } else {
+                    contextMenuElement.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: "smooth"
+                    })
+                }
+            } else {
+                current.classList.toggle("active");
+                let last = document.getElementById("contextMenuContainer").lastElementChild;
+                last && last.classList.toggle("active");
                 contextMenuElement.scrollTo({
-                    top:pre.offsetTop-129,
-                    left:0,
-                    behavior:"smooth"
-                })
-            }else{
-                contextMenuElement.scrollTo({
-                    top:0,
-                    left:0,
-                    behavior:"smooth"
-                })
-            }
-        } else {
-            current.classList.toggle("active");
-            let last = document.getElementById("contextMenuContainer").lastElementChild;
-            last && last.classList.toggle("active");
-            contextMenuElement.scrollTo({
-                top:last.offsetTop,
-                left:0,
-                behavior:"auto"
-            })
-        }
-        break;
-    case 'ArrowDown':
-        console.log('press down');
-        current = document.querySelector('.active');
-        let next = document.querySelector('.active').nextElementSibling;
-        if (!!next) {
-            current.classList.toggle("active");
-            next.classList.toggle("active");
-            console.log('distance from top :',next.offsetTop)
-            if(next.offsetTop > 129){
-                contextMenuElement.scrollTo({
-                    top:next.offsetTop-129,
-                    left:0,
-                    behavior:"smooth"
+                    top: last.offsetTop,
+                    left: 0,
+                    behavior: "auto"
                 })
             }
-        } else {
-            current.classList.toggle("active");
-            let first = document.getElementById("contextMenuContainer").firstElementChild;
-            first && first.classList.toggle("active");
-            contextMenuElement.scrollTo({
-                top:first.offsetTop,
-                left:0,
-                behavior:"auto"
-            })
-        }
-        break;
+            break;
+        case 'ArrowDown':
+            console.log('press down');
+            current = document.querySelector('.active');
+            let next = document.querySelector('.active').nextElementSibling;
+            if (!!next) {
+                current.classList.toggle("active");
+                next.classList.toggle("active");
+                console.log('distance from top :', next.offsetTop)
+                if (next.offsetTop > 129) {
+                    contextMenuElement.scrollTo({
+                        top: next.offsetTop - 129,
+                        left: 0,
+                        behavior: "smooth"
+                    })
+                }
+            } else {
+                current.classList.toggle("active");
+                let first = document.getElementById("contextMenuContainer").firstElementChild;
+                first && first.classList.toggle("active");
+                contextMenuElement.scrollTo({
+                    top: first.offsetTop,
+                    left: 0,
+                    behavior: "auto"
+                })
+            }
+            break;
         case 'Tab':
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -101,28 +101,36 @@ function keyLinstener(e) {
 function clickListener(e) {
     console.log(e.target.innerText);
     removeClickListener();
-    document.getElementById("contextMenuContainer").style.display = 'none';
+    document.getElementById("contextMenuContainer").remove();
 }
+
+function cancleMenuClick(event) {
+    event.stopPropagation();
+    if (event.path[2].id !== 'contextMenuContainer' && event.target.id !== 'buttonDiv') {
+        document.getElementById("contextMenuContainer") && document.getElementById("contextMenuContainer").remove();
+        console.log('close menu')
+    }
+}
+
 function addClickListener() {
     // 点击其他区域消除菜单
-    document.addEventListener('click', (e) => {
-        if (e.path[2].id !== 'contextMenuContainer' && e.target.id !== 'buttonDiv') {
-            // document.getElementById("contextMenuContainer").style.display = 'none';
-            console.log('close menu')
-        }
-    });
+    document.addEventListener('click', cancleMenuClick);
     document.querySelectorAll('#contextMenuContainer > div').forEach(item => {
         item.addEventListener('click', clickListener);
     });
 }
+
 function removeClickListener() {
     document.querySelectorAll('#contextMenuContainer > div').forEach(item => {
-        item.addEventListener('click', clickListener);
+        item.removeEventListener('click', clickListener);
     });
+    document.removeEventListener('click', cancleMenuClick);
 }
+
 function addKeyDownListener() {
     window.addEventListener("keydown", keyLinstener)
 }
+
 function removeKeyDownListener() {
     window.removeEventListener('keydown', keyLinstener);
 }
@@ -135,31 +143,34 @@ function showContextMenu(recommandList) {
         contextMenu.id = 'contextMenuContainer';
         contextMenu.style['overflowY'] = 'scroll';
 
-        recommandList.forEach((item)=>{
+        recommandList.forEach((item) => {
             const itemDom = document.createElement("div");
-            if(count === 0){
+            if (count === 0) {
                 itemDom.className = 'active';
             }
             itemDom.innerText = item;
             contextMenu.appendChild(itemDom);
-            count ++;
+            count++;
         })
         document.body.appendChild(contextMenu)
         addKeyDownListener();
         addClickListener();
-    } else if (contextMenuElement.style.display !== 'none') {
-        console.log('close context menu');
-        removeKeyDownListener();
-        removeClickListener()
-        contextMenuElement.style.display = 'none';
     } else {
-        contextMenuElement.style.display = 'inline-block';
-        addClickListener();
-        addKeyDownListener();
+        contextMenuElement.remove();
+        removeClickListener();
+        removeKeyDownListener();
+        showContextMenu(recommandList);
     }
 }
 
 function getRecommandResult(value) {
+    const contextMenuElement = document.getElementById("contextMenuContainer");
+    if (value.length === 0) {
+        contextMenuElement && contextMenuElement.remove();
+        removeClickListener();
+        removeKeyDownListener();
+        return;
+    }
     let a = value; //用户输入的字符串
     let str_exact = ['^' + a, ''].join('.*'); //转化成正则格式的字符串
     let str_mid = '^' + [...a, ''].join('.*'); //转化成正则格式的字符串
@@ -192,5 +203,11 @@ function getRecommandResult(value) {
     }
     let recommandRes = new Set(temp.concat(temp1).concat(temp2));
     console.log('res============', recommandRes);
+    if (recommandRes.size === 0) {
+        contextMenuElement && contextMenuElement.remove();
+        removeClickListener();
+        removeKeyDownListener();
+        return;
+    }
     showContextMenu(recommandRes);
 }
