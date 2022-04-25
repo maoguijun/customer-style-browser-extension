@@ -97,7 +97,7 @@ function keyLinstener(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
             if(inputDom.value.includes(":")){
-                inputDom.value += (document.querySelector('.active').innerText + ';');
+                inputDom.value = inputDom.value.replace(';','')+(document.querySelector('.active').innerText + ';');
             }else{
                 inputDom.value = inputDom.value.replace(inputDom.value.trim(),document.querySelector('.active').innerText)
             }
@@ -110,7 +110,7 @@ function keyLinstener(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
             if(inputDom.value.includes(":")){
-                inputDom.value += (document.querySelector('.active').innerText + ';');
+                inputDom.value = inputDom.value.replace(';','')+(document.querySelector('.active').innerText + ';');
             }else{
                 inputDom.value = inputDom.value.replace(inputDom.value.trim(),document.querySelector('.active').innerText)
             }
