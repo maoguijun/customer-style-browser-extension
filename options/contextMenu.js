@@ -1,19 +1,19 @@
 // import cssProperties from './assets/cssproperties';
-let page = document.getElementById("buttonDiv");
+// let page = document.getElementById("buttonDiv");
 // page.addEventListener("click", handleButtonClick);
-const inputDom = document.querySelector('.input');
-inputDom.addEventListener("input", (e) => { 
-    if(e.target.value.indexOf(':') < 0)
-    {
-        getRecommandResult(e.target.value.trim())
-    }else{
-        if(e.target.value.indexOf(':') < e.target.value.length-1){
-            console.log('里面有值了不推荐');
-        }else{
-            getAttributeValue(e.target.value.replace(/\s*/g,'').split(':')[0])
-        }
-    }
- })
+// const inputDom = document.querySelector('.input');
+// inputDom.addEventListener("input", (e) => { 
+//     if(e.target.value.indexOf(':') < 0)
+//     {
+//         getRecommandResult(e.target.value.trim())
+//     }else{
+//         if(e.target.value.indexOf(':') < e.target.value.length-1){
+//             console.log('里面有值了不推荐');
+//         }else{
+//             getAttributeValue(e.target.value.replace(/\s*/g,'').split(':')[0])
+//         }
+//     }
+//  })
 const colorAttr = 'AliceBlue|AntiqueWhite|Aqua|Aquamarine|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue|BlueViolet|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|DarkBlue|DarkCyan|DarkGoldenRod|DarkGray|DarkGreen|DarkKhaki|DarkMagenta|DarkOliveGreen|DarkOrange|DarkOrchid|DarkRed|DarkSalmon|DarkSeaGreen|DarkSlateBlue|DarkSlateGray|DarkTurquoise|DarkViolet|DeepPink|DeepSkyBlue|DimGray|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold|GoldenRod|Gray|Green|GreenYellow|HoneyDew|HotPink|IndianRed |Indigo  |Ivory|Khaki|Lavender|LavenderBlush|LawnGreen|LemonChiffon|LightBlue|LightCoral|LightCyan|LightGoldenRodYellow|LightGray|LightGreen|LightPink|LightSalmon|LightSeaGreen|LightSkyBlue|LightSlateGray|LightSteelBlue|LightYellow|Lime|LimeGreen|Linen|Magenta|Maroon|MediumAquaMarine|MediumBlue|MediumOrchid|MediumPurple|MediumSeaGreen|MediumSlateBlue|MediumSpringGreen|MediumTurquoise|MediumVioletRed|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive|OliveDrab|Orange|OrangeRed|Orchid|PaleGoldenRod|PaleGreen|PaleTurquoise|PaleVioletRed|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|SlateBlue|SlateGray|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White|WhiteSmoke|Yellow|YellowGreen'.split('|');
 const lengthAttr = '0%|0ch|0cm|0em|0ex|0fr|0in|0mm|0px|0pt|0px|0rem|0vh|0vw|0vmin|0vmax'.split('|');
 /**
@@ -96,10 +96,10 @@ function keyLinstener(e) {
         case 'Tab':
             e.preventDefault();
             e.stopImmediatePropagation();
-            if(inputDom.value.includes(":")){
-                inputDom.value = inputDom.value.replace(';','')+(document.querySelector('.active').innerText + ';');
-            }else{
-                inputDom.value = inputDom.value.replace(inputDom.value.trim(),document.querySelector('.active').innerText)
+            if (inputDom.value.includes(":")) {
+                inputDom.value = inputDom.value.replace(';', '') + (document.querySelector('.active').innerText + ';');
+            } else {
+                inputDom.value = inputDom.value.replace(inputDom.value.trim(), document.querySelector('.active').innerText)
             }
             console.log('selected content  : ', document.querySelector('.active').innerText);
             contextMenuElement.remove();
@@ -109,10 +109,10 @@ function keyLinstener(e) {
         case 'Enter':
             e.preventDefault();
             e.stopImmediatePropagation();
-            if(inputDom.value.includes(":")){
-                inputDom.value = inputDom.value.replace(';','')+(document.querySelector('.active').innerText + ';');
-            }else{
-                inputDom.value = inputDom.value.replace(inputDom.value.trim(),document.querySelector('.active').innerText)
+            if (inputDom.value.includes(":")) {
+                inputDom.value = inputDom.value.replace(';', '') + (document.querySelector('.active').innerText + ';');
+            } else {
+                inputDom.value = inputDom.value.replace(inputDom.value.trim(), document.querySelector('.active').innerText)
             }
             console.log('selected content  : ', document.querySelector('.active').innerText);
             contextMenuElement.remove();
@@ -124,9 +124,26 @@ function keyLinstener(e) {
     }
 }
 function clickListener(e) {
-    console.log(e.target.innerText);
+    const menuDom = document.getElementById("contextMenuContainer");
+    editor.focus();
+    const rowPos = editor.getCursorPosition();
+    const currentLineText = editor.session.getLine(rowPos.row);
+    console.log('clickResult===', e.target.innerText, rowPos.row, editor.session.getLine(rowPos.row));
+    console.log('currentLineText==', currentLineText, currentLineText.includes(":"))
+    if (currentLineText.includes(":")) {
+        const newLineText = (currentLineText.replace(';', '') + (e.target.innerText + ';')).trim();
+        editor.removeToLineStart();
+        editor.insert(newLineText);
+        // console.log(newLineText)
+    } else {
+        const newLineText = currentLineText.replace(currentLineText.trim(), e.target.innerText).trim();
+        editor.removeToLineStart();
+        editor.insert(newLineText);
+        console.log(newLineText)
+    }
     removeClickListener();
-    document.getElementById("contextMenuContainer").remove();
+    removeKeyDownListener();
+    menuDom && menuDom.remove();
 }
 
 function cancleMenuClick(event) {
@@ -237,29 +254,29 @@ function getRecommandResult(value) {
     showContextMenu(recommandRes);
 }
 
-function getAttributeValue(attr){
+function getAttributeValue(attr) {
     let count = 0;
     let LENGTH_POS = cssProperties[attr].indexOf('length');
     let COLOR_POS = cssProperties[attr].indexOf('color');
     const contextMenuElement = document.getElementById("contextMenuContainer");
-    if(cssProperties[attr].length < 1 || !attr){
+    if (cssProperties[attr].length < 1 || !attr) {
         contextMenuElement && contextMenuElement.remove();
         removeClickListener();
         removeKeyDownListener();
         return;
     }
-    if ( LENGTH_POS != -1){
-        cssProperties[attr].splice(LENGTH_POS,1,...lengthAttr);
+    if (LENGTH_POS != -1) {
+        cssProperties[attr].splice(LENGTH_POS, 1, ...lengthAttr);
     }
-    if ( COLOR_POS != -1){
-        cssProperties[attr].splice(COLOR_POS,1,...colorAttr);
+    if (COLOR_POS != -1) {
+        cssProperties[attr].splice(COLOR_POS, 1, ...colorAttr);
     }
     if (!contextMenuElement) {
         const contextMenu = document.createElement("div");
         contextMenu.id = 'contextMenuContainer';
         contextMenu.style['overflowY'] = 'scroll';
 
-        for(let item of cssProperties[attr]){
+        for (let item of cssProperties[attr]) {
             const itemDom = document.createElement("div");
             if (count === 0) {
                 itemDom.className = 'active';
