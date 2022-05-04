@@ -30,6 +30,10 @@ const lengthAttr = '0%|0ch|0cm|0em|0ex|0fr|0in|0mm|0px|0pt|0px|0rem|0vh|0vw|0vmi
  */
 function keyLinstener(e) {
     const contextMenuElement = document.getElementById("contextMenuContainer");
+    const rowPos = editor.getCursorPosition();
+    const currentLineText = editor.session.getLine(rowPos.row);
+    const highlightVal = document.querySelector('.active').innerText;
+    console.log('print the keyboard you pressed:  ',`%c ${e.key}`,'background:rgb(100,200,100)')
     let current;
     switch (e.key) {
         case 'ArrowUp':
@@ -94,12 +98,23 @@ function keyLinstener(e) {
             }
             break;
         case 'Tab':
+            console.log("%c tab input===","background:rgb(200,200,100)",currentLineText,highlightVal)
             e.preventDefault();
             e.stopImmediatePropagation();
-            if (inputDom.value.includes(":")) {
-                inputDom.value = inputDom.value.replace(';', '') + (document.querySelector('.active').innerText + ';');
+            if (currentLineText.includes(":")) {
+                let newLineText = '';
+                if(currentLineText.includes(";")){
+                    newLineText = (currentLineText.replace(';', '') + (highlightVal)).trim();
+                }else{
+                    newLineText = (currentLineText.replace(';', '') + (highlightVal + ';')).trim();
+                }
+                editor.removeToLineStart();
+                editor.insert(newLineText);
             } else {
-                inputDom.value = inputDom.value.replace(inputDom.value.trim(), document.querySelector('.active').innerText)
+                const newLineText = currentLineText.replace(currentLineText.trim(), highlightVal).trim();
+                editor.removeToLineStart();
+                editor.insert(newLineText);
+                console.log(newLineText)
             }
             console.log('selected content  : ', document.querySelector('.active').innerText);
             contextMenuElement.remove();
@@ -109,10 +124,22 @@ function keyLinstener(e) {
         case 'Enter':
             e.preventDefault();
             e.stopImmediatePropagation();
-            if (inputDom.value.includes(":")) {
-                inputDom.value = inputDom.value.replace(';', '') + (document.querySelector('.active').innerText + ';');
+            console.log("%c enter input===","background:rgb(200,200,100)",currentLineText,highlightVal)
+            if (currentLineText.includes(":")) {
+                let newLineText = '';
+                if(currentLineText.includes(";")){
+                    newLineText = (currentLineText.replace(';', '') + (highlightVal)).trim();
+                }else{
+                    newLineText = (currentLineText.replace(';', '') + (highlightVal + ';')).trim();
+                }
+                editor.removeToLineStart();
+                editor.insert(newLineText);
+                // console.log(newLineText)
             } else {
-                inputDom.value = inputDom.value.replace(inputDom.value.trim(), document.querySelector('.active').innerText)
+                const newLineText = currentLineText.replace(currentLineText.trim(), highlightVal).trim();
+                editor.removeToLineStart();
+                editor.insert(newLineText);
+                console.log(newLineText)
             }
             console.log('selected content  : ', document.querySelector('.active').innerText);
             contextMenuElement.remove();
@@ -120,6 +147,7 @@ function keyLinstener(e) {
             removeClickListener();
             break;
         default:
+            console.log('print the keyboard you pressed:',e.key)
             break;
     }
 }
@@ -131,7 +159,12 @@ function clickListener(e) {
     console.log('clickResult===', e.target.innerText, rowPos.row, editor.session.getLine(rowPos.row));
     console.log('currentLineText==', currentLineText, currentLineText.includes(":"))
     if (currentLineText.includes(":")) {
-        const newLineText = (currentLineText.replace(';', '') + (e.target.innerText + ';')).trim();
+        let newLineText = '';
+        if(currentLineText.includes(";")){
+            newLineText = (currentLineText.replace(';', '') + (e.target.innerText)).trim();
+        }else{
+            newLineText = (currentLineText.replace(';', '') + (e.target.innerText + ';')).trim();
+        }
         editor.removeToLineStart();
         editor.insert(newLineText);
         // console.log(newLineText)
@@ -181,10 +214,10 @@ function showContextMenu(recommandList) {
     let count = 0;
     const contextMenuElement = document.getElementById("contextMenuContainer");
     if (!contextMenuElement) {
+        editor.blur();
         const contextMenu = document.createElement("div");
         contextMenu.id = 'contextMenuContainer';
         contextMenu.style['overflowY'] = 'scroll';
-
         recommandList.forEach((item) => {
             const itemDom = document.createElement("div");
             if (count === 0) {
@@ -250,6 +283,16 @@ function getRecommandResult(value) {
         removeClickListener();
         removeKeyDownListener();
         return;
+    }
+    // 如果已经填入值了就不推荐相同的属性了
+    console.log("a:  ",a," recommandRes:",recommandRes,"compare",recommandRes.has(a.trim()))
+    if(recommandRes.size === 1 && recommandRes.has(a.trim())){
+        contextMenuElement && contextMenuElement.remove();
+        removeClickListener();
+        removeKeyDownListener();
+        return;
+    }else if(recommandRes.has(a.trim())){
+        recommandRes.delete(a.trim());
     }
     showContextMenu(recommandRes);
 }
