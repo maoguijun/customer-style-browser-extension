@@ -33,12 +33,12 @@ try {
         getAttributeValue(rowData.replace(/\s*/g, "").split(":")[0]);
       }
     }
-    // editerChange(editor);
+    editerChange(editor);
   });
 
   // 弹出输入框的时候，自动填充样式代码
-  // chrome.storage.sync.get("customStyle", ({ customStyle }) => {
-  //   // editor.value = customStyle;
-  //   editor.setValue(customStyle);
-  // });
+  chrome.storage.sync.get("customStyle", ({ customStyle }) => {
+    // editor.value = customStyle;
+    editor.setValue(customStyle);
+  });
 } catch (error) {}
