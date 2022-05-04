@@ -13,20 +13,27 @@ editor.setHighlightActiveLine(true);
 try {
   editor.on("change", (e) => {
     const rowData = editor.session.getLine(e.end.row);
-    console.log('e====',e);
-    console.log('rowData====', rowData);
+    console.log("e====", e);
+    console.log("rowData====", rowData);
 
-    if(rowData.indexOf(':') < 0){
-        getRecommandResult(rowData.trim())
+    if (rowData.indexOf(":") < 0) {
+      getRecommandResult(rowData.trim());
     } else {
-        if(rowData.indexOf(':') < rowData.length-1 && rowData[rowData.indexOf(':')+1] != ';'){
-            console.log('there is some word inside \':\' and \';\' ,so cancel recommending');
-        }else{
-            getAttributeValue(rowData.replace(/\s*/g,'').split(':')[0])
-        }
+      if (
+        rowData.indexOf(":") < rowData.length - 1 &&
+        rowData[rowData.indexOf(":") + 1] != ";"
+      ) {
+        console.log(
+          "there is some word inside ':' and ';' ,so cancel recommending"
+        );
+        setTimeout(() => {
+          editor.focus();
+        }, 50);
+      } else {
+        getAttributeValue(rowData.replace(/\s*/g, "").split(":")[0]);
+      }
     }
     // editerChange(editor);
-
   });
 
   // 弹出输入框的时候，自动填充样式代码
