@@ -98,7 +98,7 @@ function keyLinstener(e) {
             }
             break;
         case 'Tab':
-            console.log("%c tab input===","background:rgb(200,200,100)",currentLineText,highlightVal)
+            // console.log("%c tab input===","background:rgb(200,200,100)",currentLineText,highlightVal)
             e.preventDefault();
             e.stopImmediatePropagation();
             if (currentLineText.includes(":")) {
@@ -124,7 +124,7 @@ function keyLinstener(e) {
         case 'Enter':
             e.preventDefault();
             e.stopImmediatePropagation();
-            console.log("%c enter input===","background:rgb(200,200,100)",currentLineText,highlightVal)
+            // console.log("%c enter input===","background:rgb(200,200,100)",currentLineText,highlightVal)
             if (currentLineText.includes(":")) {
                 let newLineText = '';
                 if(currentLineText.includes(";")){
