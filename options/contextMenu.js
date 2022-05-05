@@ -410,4 +410,7 @@ function getAttributeValue(attr) {
     removeKeyDownListener();
     getAttributeValue(attr);
   }
+  setTimeout(()=>{
+    editor.blur();
+  },0)
 }

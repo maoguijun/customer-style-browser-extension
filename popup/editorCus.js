@@ -18,9 +18,9 @@ try {
     if (rowData.indexOf(":") < 0) {
       getRecommandResult(rowData.trim());
     } else {
+      const propertyValue = rowData.replace(/\s*/g, "").split(":")[1];
       if (
-        rowData.indexOf(":") < rowData.length - 1 &&
-        rowData[rowData.indexOf(":") + 1] != ";"
+        propertyValue && propertyValue != ";"  
       ) {
         console.log(
           "there is some word inside ':' and ';' ,so cancel recommending"
