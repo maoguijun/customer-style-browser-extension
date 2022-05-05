@@ -27,6 +27,7 @@ try {
         );
         setTimeout(() => {
           editor.focus();
+          getRecommandResult('')
         }, 50);
       } else {
         editor.blur();
