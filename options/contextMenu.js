@@ -181,9 +181,9 @@ function keyLinstener(e) {
     default:
       console.log("print the keyboard you pressed:", e.key);
       editor.focus();
-      contextMenuElement.remove();
-      removeKeyDownListener();
-      removeClickListener();
+      //   contextMenuElement.remove();
+      //   removeKeyDownListener();
+      //   removeClickListener();
       break;
   }
 }
@@ -261,10 +261,10 @@ function removeClickListener() {
 
 function addKeyDownListener() {
   window.addEventListener("keydown", keyLinstener);
-  window.addEventListener("keyup", (e)=>{
-      if(e.key === ':'){
-          editor.blur();
-      }
+  window.addEventListener("keyup", (e) => {
+    if (e.key === ":") {
+      editor.blur();
+    }
   });
 }
 
@@ -273,7 +273,6 @@ function removeKeyDownListener() {
 }
 
 function showContextMenu(recommandList) {
-  editor.blur();
   let count = 0;
   const contextMenuElement = document.getElementById("contextMenuContainer");
   if (!contextMenuElement) {
@@ -300,6 +299,9 @@ function showContextMenu(recommandList) {
     removeKeyDownListener();
     showContextMenu(recommandList);
   }
+  setTimeout(()=>{
+    editor.blur();
+  },0)
 }
 
 function getRecommandResult(value) {
@@ -346,9 +348,9 @@ function getRecommandResult(value) {
     contextMenuElement && contextMenuElement.remove();
     removeClickListener();
     removeKeyDownListener();
-    setTimeout(()=>{
-        editor.focus();
-    },50)
+    setTimeout(() => {
+      editor.focus();
+    }, 50);
     return;
   }
   // 如果已经填入值了就不推荐相同的属性了
@@ -357,9 +359,9 @@ function getRecommandResult(value) {
     contextMenuElement && contextMenuElement.remove();
     removeClickListener();
     removeKeyDownListener();
-    setTimeout(()=>{
-        editor.focus();
-    },50)
+    setTimeout(() => {
+      editor.focus();
+    }, 50);
     return;
   } else if (recommandRes.has(a.trim())) {
     recommandRes.delete(a.trim());
