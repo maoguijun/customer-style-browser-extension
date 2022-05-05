@@ -181,6 +181,9 @@ function keyLinstener(e) {
     default:
       console.log("print the keyboard you pressed:", e.key);
       editor.focus();
+      contextMenuElement.remove();
+      removeKeyDownListener();
+      removeClickListener();
       break;
   }
 }

@@ -13,9 +13,8 @@ editor.setHighlightActiveLine(true);
 try {
   editor.on("change", (e) => {
     const rowData = editor.session.getLine(e.end.row);
-    console.log("e====", e);
-    console.log("rowData====", rowData);
-
+    // console.log("e====", e);
+    // console.log("rowData====", rowData);
     if (rowData.indexOf(":") < 0) {
       getRecommandResult(rowData.trim());
     } else {
@@ -30,6 +29,7 @@ try {
           editor.focus();
         }, 50);
       } else {
+        editor.blur();
         getAttributeValue(rowData.replace(/\s*/g, "").split(":")[0]);
       }
     }
