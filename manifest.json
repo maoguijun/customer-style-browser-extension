@@ -1,12 +1,13 @@
 {
-  "name": "Getting Started Example",
-  "description": "Build an Extension!",
+  "name": "页面样式自定义工具",
+  "description": "页面样式自定义工具",
   "version": "1.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": ["*://*/*"],
   "action": {
     "default_popup": "/popup/popup.html",
     "default_icon": {

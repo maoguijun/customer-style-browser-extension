@@ -2,16 +2,14 @@
  * @Author: maoguijun
  * @Date: 2022-04-07 14:18:46
  * @LastEditors: maoguijun
- * @LastEditTime: 2022-04-07 21:03:06
- * @FilePath: \customer-style-browser-extension\popup.js
+ * @LastEditTime: 2022-06-24 15:16:04
+ * @FilePath: \customer-style-browser-extension\popup\popup.js
  */
 // When the button is clicked, inject setPageBackgroundColor into current page
-
 
 const editerChange = async (editor) => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const customStyle = editor.getValue();
-  console.log(22, customStyle);
   chrome.storage.sync.set({ customStyle });
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
@@ -23,7 +21,6 @@ const editerChange = async (editor) => {
 // current page
 function setCustomStyle() {
   chrome.storage.sync.get("customStyle", ({ customStyle }) => {
-    console.log(customStyle);
     const customStyleElement = document.getElementById("customStyleElement");
     if (!customStyleElement) {
       const style = document.createElement("style");
